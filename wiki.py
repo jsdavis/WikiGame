@@ -117,14 +117,10 @@ def CheckAndPrintAllAssociationsTo(Ancestor,Counter):
   #print(ReverseAssociations)
 
   for x in ReverseAssociations:
-    if x.lower() == Ancestor.lower():
+    if x.lower() == Ancestor.lower() || :
         print(ReverseAssociations[x], "and",
-         x, "are directly connected")
-<<<<<<< HEAD
-        counter--
-=======
-
->>>>>>> origin/experimental
+         x, "are directly connected") 
+        Counter--
         CheckAndPrintAllAssociationsTo(ReverseAssociations[x])
         return
   return
@@ -158,12 +154,6 @@ else:
 
     DeeperSearch(PreviousList)
     CheckAndPrintAllAssociationsTo(dest.title)
-<<<<<<< HEAD
-    
-
-    
-=======
->>>>>>> origin/experimental
 
     position = DeeperSearch(PreviousList)
     path.append(PreviousList[position].lower())

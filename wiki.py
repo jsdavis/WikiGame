@@ -123,14 +123,14 @@ def DeeperSearch(PreviousList):
 def AssociateTo (Ancestor, predecessor):
   ReverseAssociations[Ancestor] = predecessor
 
-def CheckAndPrintAllAssociationsTo(Ancestor):
+def CheckAndPrintAllAssociationsTo(Ancestor,Counter):
   #print(ReverseAssociations)
 
   for x in ReverseAssociations:
     if x.lower() == Ancestor.lower():
         print(ReverseAssociations[x], "and",
          x, "are directly connected")
-        
+        counter--
         CheckAndPrintAllAssociationsTo(ReverseAssociations[x])
         return
   return
@@ -154,7 +154,8 @@ for y in range(len(CurrentList)):
             AssociateTo(CurrentList[y],start.title)
 
 if(Comparison(CurrentList) >= 0 ):
-  path.append(dest.title.lower())
+  CheckAndPrintAllAssociationsTo(dest.title)
+  #path.append(dest.title.lower())
 else:
     PreviousList = CurrentList
 
@@ -167,15 +168,6 @@ else:
     CheckAndPrintAllAssociationsTo(dest.title)
     
 
-
-
-
-
-
-
-
-
-
     
 
 =======
@@ -183,5 +175,5 @@ else:
     path.append(PreviousList[position].lower())
 >>>>>>> experimental
 
-for x in range(len(path)):
-  print('%s: %s' % (x+1, path[x]))
+#for x in range(len(path)):
+#  print('%s: %s' % (x+1, path[x]))

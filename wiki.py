@@ -7,6 +7,10 @@ import re
 start = wikipedia.page('Cosmicism')
 dest = wikipedia.page('Cthulhu')
 
+ReverseAssociations = {}
+
+level0 = start.links
+
 def sort(links):
   linksize = {}
   for x in range(len(links)):
@@ -64,8 +68,10 @@ def Comparison(ListOLinks):
     if ListOLinks[x].lower() == dest.title.lower():
       return x
   return -1
-
+   
 def DeeperSearch(PreviousList):
+
+    ToBeList = []
 
     for x in range(len(PreviousList)):
         try:
@@ -75,19 +81,42 @@ def DeeperSearch(PreviousList):
 
         CurrentList = getLinks(next, MasterList)
 
+        for y in range(len(CurrentList)):
+            AssociateTo(CurrentList[y],next.title)
+
         if(Comparison(CurrentList) >= 0 ):
-            print(next.title.lower(), "and", dest.title.lower(),
-                 "are directly connected")
-            return x
+            return
 
         for i in CurrentList:
             if i not in MasterList:
+                ToBeList.append(i)
                 MasterList.append(i)
 
+    DeeperSearch(ToBeList)
+    
+def AssociateTo (Ancestor, predecessor):
+  ReverseAssociations[Ancestor] = predecessor
 
-MasterList = []
+def CheckAndPrintAllAssociationsTo(Ancestor):
+  #print(ReverseAssociations)
+
+  for x in ReverseAssociations:
+    if x.lower() == Ancestor.lower():
+        print(ReverseAssociations[x], "and",
+         x, "are directly connected")
+        
+        CheckAndPrintAllAssociationsTo(ReverseAssociations[x])
+        return
+  return
+
+  
+  
+  
+MasterList = [] 
 PreviousList = []
 CurrentList = getLinks(start, MasterList)
+for y in range(len(CurrentList)):
+            AssociateTo(CurrentList[y],start.title)
 
 if(Comparison(CurrentList) >= 0 ):
     print(start.title.lower(), "and",
@@ -99,9 +128,9 @@ else:
         if i not in MasterList:
             MasterList.append(i)
 
-    position = DeeperSearch(PreviousList)
-    print(start.title.lower(), "and", PreviousList[position].lower()
-        , "are directly connected")
+    DeeperSearch(PreviousList)
+    CheckAndPrintAllAssociationsTo(dest.title)
+    
 
 
 
@@ -112,6 +141,6 @@ else:
 
 
 
-
+    
 
 

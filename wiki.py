@@ -2,6 +2,13 @@ import wikipedia
 import urllib
 import re
 
+#wikipedia.set_rate_limiting(True)
+
+start = wikipedia.page('Cosmicism')
+dest = wikipedia.page('Cthulhu')
+
+ReverseAssociations = {}
+
 # wikipedia.set_rate_limiting(True)
 
 # UNFINISHED/DEPRECATED sorting method to figure out the most valuable links on a Wiki page
@@ -68,11 +75,15 @@ def getLinks(page, MasterList):
   return links
 
 # Checks to see if the destination page is in the passed in list
-def Comparison(ListOLinks):
-  for x in range(len(ListOLinks)):
-    if ListOLinks[x].lower() == dest.title.lower():
+def Comparison(links):
+  for x in range(len(links)):
+    if links[x].lower() == dest.title.lower():
       return x
   return -1
+
+def DeeperSearch(PreviousList):
+
+    ToBeList = []
 
 # Traverses links across layers of Wiki pages
 def DeeperSearch(PreviousList):
@@ -84,14 +95,40 @@ def DeeperSearch(PreviousList):
 
         CurrentList = getLinks(next, MasterList)
 
+        for y in range(len(CurrentList)):
+            AssociateTo(CurrentList[y],next.title)
+
         if(Comparison(CurrentList) >= 0 ):
-            print(next.title.lower(), "and", dest.title.lower(),
-                 "are directly connected")
+            return
+            path.append(next.title.lower())
             return x
 
         for i in CurrentList:
             if i not in MasterList:
+                ToBeList.append(i)
                 MasterList.append(i)
+
+    DeeperSearch(ToBeList)
+
+def AssociateTo (Ancestor, predecessor):
+  ReverseAssociations[Ancestor] = predecessor
+
+def CheckAndPrintAllAssociationsTo(Ancestor,Counter):
+  #print(ReverseAssociations)
+
+  for x in ReverseAssociations:
+    if x.lower() == Ancestor.lower() || :
+        print(ReverseAssociations[x], "and",
+         x, "are directly connected") 
+        Counter--
+        CheckAndPrintAllAssociationsTo(ReverseAssociations[x])
+        return
+  return
+
+
+
+
+MasterList = []
 
 ###############################################################################
 
@@ -102,9 +139,12 @@ MasterList = []
 PreviousList = []
 path = []
 CurrentList = getLinks(start, MasterList)
+for y in range(len(CurrentList)):
+            AssociateTo(CurrentList[y],start.title)
 
 if(Comparison(CurrentList) >= 0 ):
-  path.append(dest.title.lower())
+  CheckAndPrintAllAssociationsTo(dest.title)
+  #path.append(dest.title.lower())
 else:
     PreviousList = CurrentList
 
@@ -112,8 +152,11 @@ else:
         if i not in MasterList:
             MasterList.append(i)
 
+    DeeperSearch(PreviousList)
+    CheckAndPrintAllAssociationsTo(dest.title)
+
     position = DeeperSearch(PreviousList)
     path.append(PreviousList[position].lower())
 
-for x in range(len(path)):
-  print('%s: %s' % (x+1, path[x]))
+#for x in range(len(path)):
+#  print('%s: %s' % (x+1, path[x]))

@@ -2,14 +2,13 @@ import wikipedia
 import urllib
 import re
 
-<<<<<<< HEAD
 #wikipedia.set_rate_limiting(True)
 
 start = wikipedia.page('Cosmicism')
 dest = wikipedia.page('Cthulhu')
 
 ReverseAssociations = {}
-=======
+
 # wikipedia.set_rate_limiting(True)
 
 # UNFINISHED/DEPRECATED sorting method to figure out the most valuable links on a Wiki page
@@ -25,7 +24,6 @@ ReverseAssociations = {}
 #       print("Page: %s\nLinks: %s\n" % (links[x], linksize[links[x]]))
 #     except UnicodeEncodeError:
 #       print("Page: UNDEFINED\nLinks: %s\n" % (linksize[links[x]]))
->>>>>>> experimental
 
 # Uses a wiki-text URL dump to generate a list of links for the given Wikipedia page
 def getLinks(page, MasterList):
@@ -82,17 +80,13 @@ def Comparison(links):
     if links[x].lower() == dest.title.lower():
       return x
   return -1
-<<<<<<< HEAD
-   
+
 def DeeperSearch(PreviousList):
 
     ToBeList = []
 
-=======
-
 # Traverses links across layers of Wiki pages
 def DeeperSearch(PreviousList):
->>>>>>> experimental
     for x in range(len(PreviousList)):
         try:
             next = wikipedia.page(PreviousList[x])
@@ -105,21 +99,17 @@ def DeeperSearch(PreviousList):
             AssociateTo(CurrentList[y],next.title)
 
         if(Comparison(CurrentList) >= 0 ):
-<<<<<<< HEAD
             return
-=======
             path.append(next.title.lower())
             return x
->>>>>>> experimental
 
         for i in CurrentList:
             if i not in MasterList:
                 ToBeList.append(i)
                 MasterList.append(i)
 
-<<<<<<< HEAD
     DeeperSearch(ToBeList)
-    
+
 def AssociateTo (Ancestor, predecessor):
   ReverseAssociations[Ancestor] = predecessor
 
@@ -130,23 +120,22 @@ def CheckAndPrintAllAssociationsTo(Ancestor):
     if x.lower() == Ancestor.lower():
         print(ReverseAssociations[x], "and",
          x, "are directly connected")
-        
+
         CheckAndPrintAllAssociationsTo(ReverseAssociations[x])
         return
   return
 
-  
-  
-  
-MasterList = [] 
-=======
+
+
+
+MasterList = []
+
 ###############################################################################
 
 start = wikipedia.page('Cosmicism')
 dest = wikipedia.page('Cthulhu')
 
 MasterList = []
->>>>>>> experimental
 PreviousList = []
 path = []
 CurrentList = getLinks(start, MasterList)
@@ -162,26 +151,11 @@ else:
         if i not in MasterList:
             MasterList.append(i)
 
-<<<<<<< HEAD
     DeeperSearch(PreviousList)
     CheckAndPrintAllAssociationsTo(dest.title)
-    
 
-
-
-
-
-
-
-
-
-
-    
-
-=======
     position = DeeperSearch(PreviousList)
     path.append(PreviousList[position].lower())
->>>>>>> experimental
 
 for x in range(len(path)):
   print('%s: %s' % (x+1, path[x]))

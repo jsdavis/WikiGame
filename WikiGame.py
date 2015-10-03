@@ -42,12 +42,6 @@ class Application(Frame):
 		self.searchB["command"] = self.search
 		self.searchB.grid(row = 3, column = 0, columnspan = 1, sticky = W, padx = 10, pady = 5)
 
-		# Randomize button
-		self.randB = Button(self, text = "Randomize")
-		# When button is pressed randomize text fields
-		self.randB["command"] =  self.randomize
-		self.randB.grid(row = 3, column = 3, columnspan = 2, sticky = W, padx = 10, pady = 5)
-
 		# Screen to show results
 		self.text = Text(self, width = 35, height = 5, wrap = WORD)
 		self.text.grid(row = 4, column = 0, columnspan = 4, sticky = W, padx = 10, pady = 5)
@@ -55,33 +49,29 @@ class Application(Frame):
 	def search(self):
 		""" Takes value from text fields and uses the wiki algorithm"""
 		self.text.delete(0.0, END)
-		if self.start.get() != '' and self.end.get() != '':
-			self.text.insert(0.0, 'Start is %s. Target is %s' % (self.start.get(), self.end.get()) )
-			#wikiMethod(self.start.get(), self.end.get())
-		else:
-			self.text.insert(0.0, 'A field is blank.')
+		# Assigns start to random if empty
+		x = self.start.get()
+		y = self.end.get()
 
-	def randomize(self):
-		""" Randomize the articles """
-		# Configure text to be wikipedia.random()
-		randA = None
-		randB = None
-		while True:
-			try:
-				randA = wikipedia.random(1)
-				randB = wikipedia.random(1)
-				self.text.delete(0.0, END)
-				self.text.insert(0.0, 'Start is %s. Target is %s' % (randA, randB) )
-				break
-			except UnicodeEncodeError:
-				pass
-		# wikiMethod(randA, randB)
-
-# Placeholder
-def donothing():
-   filewin = Toplevel(root)
-   button = Button(filewin, text="Do nothing button")
-   button.pack()		
+		if x == '':
+			while True:
+				try:
+					x = wikipedia.random(1)
+					self.text.insert(0.0, 'Random start is %s.\n' % x)
+					break
+				except UnicodeEncodeError:
+					pass
+		# Assigns end to random if empty
+		if y == '':
+			while True:
+				try:
+					y = wikipedia.random(1)
+					self.text.insert(0.0, 'Random end is %s.\n' % y)
+					break
+				except UnicodeEncodeError:
+					pass
+		self.text.insert(0.0, 'Start is %s.\nTarget is %s.\n' % (x,y))
+		#wikiMethod(self.start.get(), self.end.get())
 
 # Creates about page
 def about():
@@ -127,7 +117,7 @@ helpmenu = Menu(menubar, tearoff = 0)
 helpmenu.add_command(label="Help Index", command = donate)
 helpmenu.add_command(label="About...", command = about)
 helpmenu.add_command(label="Donate", command = donate)
-menubar.add_cascade(label="Help", menu=helpmenu)
+menubar.add_cascade(label="Help", menu = helpmenu)
 
 root.config(menu=menubar)
 

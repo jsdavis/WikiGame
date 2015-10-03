@@ -125,6 +125,14 @@ root.config(menu=menubar)
 root.title("Wikipedia Game")
 root.geometry("305x230")
 
+# Path of picture
+path = "SD_Hacks.png"
+print("test")
+img = ImageTk.PhotoImage(Image.open(path))
+print("test2")
+panel = tk.Label(root, image = img)
+panel.pack(side = "bottom", fill = "both", expand = "yes")
+
 app = Application(root)
 
 # Starts event loop

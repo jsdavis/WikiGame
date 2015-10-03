@@ -9,23 +9,6 @@ start = wikipedia.page('Cosmicism')
 dest = wikipedia.page('Cthulhu')
 
 ReverseAssociations = {}
-
-level0 = start.links
-
-def sort(links):
-  linksize = {}
-  for x in range(len(links)):
-    try:
-      page = wikipedia.page(links[x])
-    except wikipedia.exceptions.WikipediaException:
-      continue
-    linksize[links[x]] = len(page.links)
-    try:
-      print("Page: %s\nLinks: %s\n" % (links[x], linksize[links[x]]))
-    except UnicodeEncodeError:
-      print("Page: UNDEFINED\nLinks: %s\n" % (linksize[links[x]]))
-
-
 =======
 # wikipedia.set_rate_limiting(True)
 

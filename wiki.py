@@ -68,9 +68,9 @@ def getLinks(page, MasterList):
   return links
 
 # Checks to see if the destination page is in the passed in list
-def Comparison(ListOLinks):
-  for x in range(len(ListOLinks)):
-    if ListOLinks[x].lower() == dest.title.lower():
+def Comparison(links):
+  for x in range(len(links)):
+    if links[x].lower() == dest.title.lower():
       return x
   return -1
 
@@ -85,8 +85,7 @@ def DeeperSearch(PreviousList):
         CurrentList = getLinks(next, MasterList)
 
         if(Comparison(CurrentList) >= 0 ):
-            print(next.title.lower(), "and", dest.title.lower(),
-                 "are directly connected")
+            path.append(next.title.lower())
             return x
 
         for i in CurrentList:

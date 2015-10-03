@@ -2,6 +2,7 @@ import wikipedia
 import urllib
 import re
 
+<<<<<<< HEAD
 #wikipedia.set_rate_limiting(True)
 
 start = wikipedia.page('Cosmicism')
@@ -25,9 +26,28 @@ def sort(links):
       print("Page: UNDEFINED\nLinks: %s\n" % (linksize[links[x]]))
 
 
+=======
+# wikipedia.set_rate_limiting(True)
+
+# UNFINISHED/DEPRECATED sorting method to figure out the most valuable links on a Wiki page
+# def sort(links):
+#   linksize = {}
+#   for x in range(len(links)):
+#     try:
+#       page = wikipedia.page(links[x])
+#     except wikipedia.exceptions.WikipediaException:
+#       continue
+#     linksize[links[x]] = len(page.links)
+#     try:
+#       print("Page: %s\nLinks: %s\n" % (links[x], linksize[links[x]]))
+#     except UnicodeEncodeError:
+#       print("Page: UNDEFINED\nLinks: %s\n" % (linksize[links[x]]))
+>>>>>>> experimental
 
 # Uses a wiki-text URL dump to generate a list of links for the given Wikipedia page
 def getLinks(page, MasterList):
+
+  # URL from which you can pull raw wiki-text from any page, given the title
   urlBase = "https://en.wikipedia.org/w/index.php?action=raw&title="
   title = page.title.replace(" ", "%20")
   url = urlBase + title
@@ -35,44 +55,61 @@ def getLinks(page, MasterList):
   temp = urllib.request.urlopen(url)
   wikiText = str(temp.read())
 
+
+  # Avoid category links at the end of large articles by cutting off at one of these sections
+  # Regex pulls either the 'external links', 'references', or 'see also' headers
+  #   ==\s*  --> section headers are enclosed in '==', and generally have a space between the header and '=='
   linksFix = re.search('==\s*external links\s*==', wikiText, re.I)
   if linksFix == None:
     linksFix = re.search('==\s*references\s*==', wikiText, re.I)
   if linksFix == None:
     linksFix = re.search('==\s*see also\s*==', wikiText, re.I)
 
+  # Truncate the raw wiki-text before we extract links
   try:
     wikiText = wikiText[0:linksFix.start()]
   except:
     pass
 
+  # Regex extracts links into the first capturing group:
+  #   \[\[     --> matches 2 '[' characters
+  #   (.+?)    --> pulls all the characters up to the next group and captures it
+  #   (/|.+?|) --> matches either a '|' character and then everything until the next thing, or nothing
+  #   \]\]     --> matches 2 ']' characters
   links = re.findall('\[\[(.+?)(\|.+?|)\]\]', wikiText)
   index = 0
   length = len(links)
   while index < length:
     links[index] = links[index][0].lower()
-    if re.match('\w+?:', links[index]):
+
+    # Use Regex to find and remove 'XXXX: xxxx' links (i.e. 'Category: ' and 'File: ' links)
+    # Also removes any links that have already been found elsewhere
+    if re.match('\w+?:', links[index]) or links[index] in MasterList:
       del links[index]
       index -= 1
       length -= 1
-    if links[index] in MasterList:
-      del links[index]
-      index -= 1
-      length -= 1
+
     index += 1
 
   return links
 
-def Comparison(ListOLinks):
-  for x in range(len(ListOLinks)):
-    if ListOLinks[x].lower() == dest.title.lower():
+# Checks to see if the destination page is in the passed in list
+def Comparison(links):
+  for x in range(len(links)):
+    if links[x].lower() == dest.title.lower():
       return x
   return -1
+<<<<<<< HEAD
    
 def DeeperSearch(PreviousList):
 
     ToBeList = []
 
+=======
+
+# Traverses links across layers of Wiki pages
+def DeeperSearch(PreviousList):
+>>>>>>> experimental
     for x in range(len(PreviousList)):
         try:
             next = wikipedia.page(PreviousList[x])
@@ -85,13 +122,19 @@ def DeeperSearch(PreviousList):
             AssociateTo(CurrentList[y],next.title)
 
         if(Comparison(CurrentList) >= 0 ):
+<<<<<<< HEAD
             return
+=======
+            path.append(next.title.lower())
+            return x
+>>>>>>> experimental
 
         for i in CurrentList:
             if i not in MasterList:
                 ToBeList.append(i)
                 MasterList.append(i)
 
+<<<<<<< HEAD
     DeeperSearch(ToBeList)
     
 def AssociateTo (Ancestor, predecessor):
@@ -113,14 +156,22 @@ def CheckAndPrintAllAssociationsTo(Ancestor):
   
   
 MasterList = [] 
+=======
+###############################################################################
+
+start = wikipedia.page('Cosmicism')
+dest = wikipedia.page('Cthulhu')
+
+MasterList = []
+>>>>>>> experimental
 PreviousList = []
+path = []
 CurrentList = getLinks(start, MasterList)
 for y in range(len(CurrentList)):
             AssociateTo(CurrentList[y],start.title)
 
 if(Comparison(CurrentList) >= 0 ):
-    print(start.title.lower(), "and",
-         dest.title.lower(), "are directly connected")
+  path.append(dest.title.lower())
 else:
     PreviousList = CurrentList
 
@@ -128,6 +179,7 @@ else:
         if i not in MasterList:
             MasterList.append(i)
 
+<<<<<<< HEAD
     DeeperSearch(PreviousList)
     CheckAndPrintAllAssociationsTo(dest.title)
     
@@ -143,4 +195,10 @@ else:
 
     
 
+=======
+    position = DeeperSearch(PreviousList)
+    path.append(PreviousList[position].lower())
+>>>>>>> experimental
 
+for x in range(len(path)):
+  print('%s: %s' % (x+1, path[x]))

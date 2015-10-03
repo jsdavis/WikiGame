@@ -1,11 +1,11 @@
-# GUI for finding shortest path between 2 wiki pages
+# GUI for finding shortest path between 2 Wikipedia articles
 from tkinter import *
 from PIL import Image, ImageTk
 import wikipedia
 import webbrowser
 
 class Application(Frame):
-	""" A GUI application used to find the path between two wiki articles"""
+	""" A GUI application used to find the shortest path between two Wikipedia articles"""
 
 	def __init__(self, master):
 		""" Initialize the Frame """
@@ -14,13 +14,13 @@ class Application(Frame):
 		self.create_widgets()
 
 	def create_widgets(self):
-		""" Generate instructions, entry boxes and submit buttons """
+		""" Generate instructions, entry boxes and submit buttons. Define actions for events. """
 
 		# Description of program
 		self.desc = Label(self, text = "Determine the shortest path between two articles!")
 		self.desc.grid(row = 0, column = 0, columnspan = 4, sticky = W, padx = 10, pady = 5)
 
-		# Instructions for starting article
+		# Instructions for inoutting starting article
 		self.instructionA = Label(self, text = "Name of starting article")
 		self.instructionA.grid(row = 1, column = 0, columnspan = 2, sticky = W, padx = 10, pady = 5)
 
@@ -28,7 +28,7 @@ class Application(Frame):
 		self.start = Entry(self)
 		self.start.grid(row = 1, column = 3, sticky = W, padx = 10, pady = 5)
 
-		# Instructions for target article
+		# Instructions for inputting target article
 		self.instructionB = Label(self, text = "Name of target article")
 		self.instructionB.grid(row = 2, column = 0, columnspan = 2, sticky = W, padx = 10, pady = 5)
 
@@ -88,17 +88,48 @@ def about():
 	newWin = Toplevel(root, height = 50, width = 50)
 	newWin.title('About')
 	about = Label(newWin, text="This project was created from October 2nd - October 4th at UCSD's first Hackathon, SD Hacks\n" +
-							   "The authors of this project are Nicholas-Lama Solet, Jacob Sean Davis and Anthony Lu")
+							   "in the year 2015. The authors of this project are Nicholas-Lama Solet, Jacob Sean Davis and Anthony Lu.")
 	about.grid()
 
 # Donate command
 def donate():
-	# Takes you to my PayPal
 	webbrowser.open('http://bit.ly/1K19Ee4', new=0, autoraise=True)
-
 
 # Creates window
 root = Tk()
+
+# Menu
+menubar = Menu(root)
+filemenu = Menu(menubar, tearoff = 0)
+filemenu.add_command(label="New", command = donate)
+filemenu.add_command(label="Open", command = donate)
+filemenu.add_command(label="Save", command = donate)
+filemenu.add_command(label="Save as...", command = donate)
+filemenu.add_command(label="Close", command = donate)
+
+filemenu.add_separator()
+
+filemenu.add_command(label="Exit", command = root.quit)
+menubar.add_cascade(label="File", menu = filemenu)
+editmenu = Menu(menubar, tearoff=0)
+editmenu.add_command(label="Undo", command = donate)
+
+editmenu.add_separator()
+
+editmenu.add_command(label="Cut", command = donate)
+editmenu.add_command(label="Copy", command = donate)
+editmenu.add_command(label="Paste", command = donate)
+editmenu.add_command(label="Delete", command = donate)
+editmenu.add_command(label="Select All", command = donate)
+
+menubar.add_cascade(label="Edit", menu = editmenu)
+helpmenu = Menu(menubar, tearoff = 0)
+helpmenu.add_command(label="Help Index", command = donate)
+helpmenu.add_command(label="About...", command = about)
+helpmenu.add_command(label="Donate", command = donate)
+menubar.add_cascade(label="Help", menu=helpmenu)
+
+root.config(menu=menubar)
 
 # Modifies window
 root.title("Wikipedia Game")

@@ -62,7 +62,7 @@ class Application(Frame):
 		""" Takes value from text fields and uses the wiki algorithm"""
 		self.text.delete(0.0, END)
 		self.text.insert(0.0, 'Start is %s. Target is %s' % (self.start.get(), self.end.get()) )
-		#wikiMethod(self.start.get(), self.end.get())
+		# wikiMethod(self.start.get(), self.end.get())
 
 	def randomize(self):
 		""" Randomize the articles """
@@ -78,9 +78,9 @@ class Application(Frame):
 				break
 			except UnicodeEncodeError:
 				pass
-		#wikiMethod(randA, randB)
+		# wikiMethod(randA, randB)
 	def Donate(self):
-		#Takes you to my PayPal
+		# Takes you to my PayPal
 		webbrowser.open('http://bit.ly/1K19Ee4', new=0, autoraise=True)
 		
 

@@ -90,18 +90,18 @@ def layerSearch(previousList, counter):
 ###############################################################################
 
 def associateTo(ancestor, predecessor):
-  ReverseAssociations[ancestor] = predecessor
+  reverseAssociations[ancestor] = predecessor
 
 ###############################################################################
 
-def PrintAllAssociations(ancestor,Counter):
+def PrintAllAssociations(ancestor,counter):
 
-  for x in ReverseAssociations:
-    if x.lower() == ancestor.lower() and Counter != 0:
-        print(ReverseAssociations[x], "and",
+  for x in reverseAssociations:
+    if x.lower() == ancestor.lower() and counter != 0:
+        print(reverseAssociations[x], "and",
          x, "are directly connected")
-        Counter = Counter - 1
-        checkAndPrintAllAssociationsTo(ReverseAssociations[x], Counter)
+        counter = counter - 1
+        checkAndPrintAllAssociationsTo(reverseAssociations[x], counter)
         return
   return
 
@@ -138,5 +138,5 @@ def main(begin, end)
 ###############################################################################
 # Globals
 
-ReverseAssociations = {}
+reverseAssociations = {}
 

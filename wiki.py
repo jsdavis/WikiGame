@@ -94,8 +94,7 @@ def associateTo(ancestor, predecessor):
 
 ###############################################################################
 
-def checkAndPrintAllAssociationsTo(ancestor,Counter):
-  #print(ReverseAssociations)
+def PrintAllAssociations(ancestor,Counter):
 
   for x in ReverseAssociations:
     if x.lower() == ancestor.lower() and Counter != 0:
@@ -108,23 +107,24 @@ def checkAndPrintAllAssociationsTo(ancestor,Counter):
 
 ###############################################################################
 
-masterList = []
-ReverseAssociations = {}
-previousList = []
-
 def main(begin, end)
 
   start = wikipedia.page(begin)
   dest = wikipedia.page(end)
-
+  
+  previousList = []
   currentList = getLinks(start, masterList)
+  masterList = []
+  result = 1;
+  
   for y in range(len(currentList)):
     associateTo(currentList[y],start.title)
-  counter = 1;
+    
+
 
   if(findDest(currentList) >= 0 ):
-    checkAndPrintAllAssociationsTo(dest.title, counter)
-  #path.append(dest.title.lower())
+    PrintAllAssociations(dest.title, result)
+    
   else:
     previousList =currentList
 
@@ -132,10 +132,11 @@ def main(begin, end)
         if i not in masterList:
             masterList.append(i)
 
-    counter = layerSearch(previousList, counter)
-    checkAndPrintAllAssociationsTo(dest.title, counter)
+    result = layerSearch(previousList, result)
+    PrintAllAssociationsT(dest.title, result)
+    
+###############################################################################
+# Globals
 
-    #path.append(previousList[position].lower())
+ReverseAssociations = {}
 
-    #for x in range(len(path)):
-    #  print('%s: %s' % (x+1, path[x]))

@@ -1,5 +1,4 @@
 import wikipedia
-import Bisector
 import urllib
 import re
 

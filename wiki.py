@@ -109,24 +109,23 @@ def checkAndPrintAllAssociationsTo(ancestor,Counter):
 ###############################################################################
 
 masterList = []
-
-start = wikipedia.page('Jesus')
-dest = wikipedia.page('Hitler')
-
-
 ReverseAssociations = {}
-masterList = []
 previousList = []
 
-currentList = getLinks(start, masterList)
-for y in range(len(currentList)):
-  associateTo(currentList[y],start.title)
-counter = 1;
+def main(begin, end)
 
-if(findDest(currentList) >= 0 ):
-  checkAndPrintAllAssociationsTo(dest.title, counter)
+  start = wikipedia.page(begin)
+  dest = wikipedia.page(end)
+
+  currentList = getLinks(start, masterList)
+  for y in range(len(currentList)):
+    associateTo(currentList[y],start.title)
+  counter = 1;
+
+  if(findDest(currentList) >= 0 ):
+    checkAndPrintAllAssociationsTo(dest.title, counter)
   #path.append(dest.title.lower())
-else:
+  else:
     previousList =currentList
 
     for i in previousList:
@@ -138,5 +137,5 @@ else:
 
     #path.append(previousList[position].lower())
 
-#for x in range(len(path)):
-#  print('%s: %s' % (x+1, path[x]))
+    #for x in range(len(path)):
+    #  print('%s: %s' % (x+1, path[x]))

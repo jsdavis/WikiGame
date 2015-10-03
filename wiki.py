@@ -2,24 +2,8 @@ import wikipedia
 import urllib
 import re
 
-# wikipedia.set_rate_limiting(True)
-
-# UNFINISHED/DEPRECATED sorting method to figure out the most valuable links on a Wiki page
-# def sort(links):
-#   linksize = {}
-#   for x in range(len(links)):
-#     try:
-#       page = wikipedia.page(links[x])
-#     except wikipedia.exceptions.WikipediaException:
-#       continue
-#     linksize[links[x]] = len(page.links)
-#     try:
-#       print("Page: %s\nLinks: %s\n" % (links[x], linksize[links[x]]))
-#     except UnicodeEncodeError:
-#       print("Page: UNDEFINED\nLinks: %s\n" % (linksize[links[x]]))
-
 # Uses a wiki-text URL dump to generate a list of links for the given Wikipedia page
-def getLinks(page, MasterList):
+def getLinks(page, masterList):
 
   # URL from which you can pull raw wiki-text from any page, given the title
   urlBase = "https://en.wikipedia.org/w/index.php?action=raw&title="
@@ -58,7 +42,7 @@ def getLinks(page, MasterList):
 
     # Use Regex to find and remove 'XXXX: xxxx' links (i.e. 'Category: ' and 'File: ' links)
     # Also removes any links that have already been found elsewhere
-    if re.match('\w+?:', links[index]) or links[index] in MasterList:
+    if re.match('\w+?:', links[index]) or links[index] in masterList:
       del links[index]
       index -= 1
       length -= 1
@@ -67,53 +51,91 @@ def getLinks(page, MasterList):
 
   return links
 
+###############################################################################
+
 # Checks to see if the destination page is in the passed in list
-def Comparison(ListOLinks):
-  for x in range(len(ListOLinks)):
-    if ListOLinks[x].lower() == dest.title.lower():
+def findDest(links):
+  for x in range(len(links)):
+    if links[x].lower() == dest.title.lower():
       return x
   return -1
 
+###############################################################################
+
 # Traverses links across layers of Wiki pages
-def DeeperSearch(PreviousList):
-    for x in range(len(PreviousList)):
+def layerSearch(previousList, counter):
+    toBeList = []
+    counter += 1
+    for x in range(len(previousList)):
         try:
-            next = wikipedia.page(PreviousList[x])
+            nextElem = wikipedia.page(previousList[x])
         except wikipedia.exceptions.WikipediaException:
             continue
 
-        CurrentList = getLinks(next, MasterList)
+        currentList = getLinks(nextElem, masterList)
 
-        if(Comparison(CurrentList) >= 0 ):
-            print(next.title.lower(), "and", dest.title.lower(),
-                 "are directly connected")
-            return x
+        for y in range(len(currentList)):
+            associateTo(currentList[y],nextElem.title)
 
-        for i in CurrentList:
-            if i not in MasterList:
-                MasterList.append(i)
+        if(findDest(currentList) >= 0 ):
+            return counter
+
+        for i in currentList:
+            if i not in masterList:
+                toBeList.append(i)
+                masterList.append(i)
+
+    layerSearch(toBeList)
 
 ###############################################################################
 
-start = wikipedia.page('Cosmicism')
-dest = wikipedia.page('Cthulhu')
+def associateTo(ancestor, predecessor):
+  ReverseAssociations[ancestor] = predecessor
 
-MasterList = []
-PreviousList = []
-path = []
-CurrentList = getLinks(start, MasterList)
+###############################################################################
 
-if(Comparison(CurrentList) >= 0 ):
-  path.append(dest.title.lower())
-else:
-    PreviousList = CurrentList
+def checkAndPrintAllAssociationsTo(ancestor,Counter):
+  #print(ReverseAssociations)
 
-    for i in PreviousList:
-        if i not in MasterList:
-            MasterList.append(i)
+  for x in ReverseAssociations:
+    if x.lower() == ancestor.lower() and Counter != 0:
+        print(ReverseAssociations[x], "and",
+         x, "are directly connected")
+        Counter = Counter - 1
+        checkAndPrintAllAssociationsTo(ReverseAssociations[x], Counter)
+        return
+  return
 
-    position = DeeperSearch(PreviousList)
-    path.append(PreviousList[position].lower())
+###############################################################################
 
-for x in range(len(path)):
-  print('%s: %s' % (x+1, path[x]))
+masterList = []
+ReverseAssociations = {}
+previousList = []
+
+def main(begin, end)
+
+  start = wikipedia.page(begin)
+  dest = wikipedia.page(end)
+
+  currentList = getLinks(start, masterList)
+  for y in range(len(currentList)):
+    associateTo(currentList[y],start.title)
+  counter = 1;
+
+  if(findDest(currentList) >= 0 ):
+    checkAndPrintAllAssociationsTo(dest.title, counter)
+  #path.append(dest.title.lower())
+  else:
+    previousList =currentList
+
+    for i in previousList:
+        if i not in masterList:
+            masterList.append(i)
+
+    counter = layerSearch(previousList, counter)
+    checkAndPrintAllAssociationsTo(dest.title, counter)
+
+    #path.append(previousList[position].lower())
+
+    #for x in range(len(path)):
+    #  print('%s: %s' % (x+1, path[x]))

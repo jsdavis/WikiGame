@@ -1,4 +1,5 @@
 # GUI for finding shortest path between 2 Wikipedia articles
+from wiki import *
 from tkinter import *
 from PIL import Image, ImageTk
 import wikipedia
@@ -56,7 +57,7 @@ class Application(Frame):
 		if x == '':
 			while True:
 				try:
-					x = wikipedia.random(1)
+					x = wikipedia.random()
 					self.text.insert(0.0, 'Random start is %s.\n' % x)
 					break
 				except UnicodeEncodeError:
@@ -65,13 +66,13 @@ class Application(Frame):
 		if y == '':
 			while True:
 				try:
-					y = wikipedia.random(1)
+					y = wikipedia.random()
 					self.text.insert(0.0, 'Random end is %s.\n' % y)
 					break
 				except UnicodeEncodeError:
 					pass
 		self.text.insert(0.0, 'Start is %s.\nTarget is %s.\n' % (x,y))
-		#wikiMethod(self.start.get(), self.end.get())
+		main(x, y)
 
 # Creates about page
 def about():

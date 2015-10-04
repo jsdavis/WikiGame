@@ -1,9 +1,8 @@
 # GUI for finding shortest path between 2 Wikipedia articles
-from wiki import *
 from tkinter import *
 from PIL import Image, ImageTk
-import wikipedia
 import webbrowser
+import SearcherAlgorithm
 
 class Application(Frame):
 	""" A GUI application used to find the shortest path between two Wikipedia articles"""
@@ -53,26 +52,7 @@ class Application(Frame):
 		# Assigns start to random if empty
 		x = self.start.get()
 		y = self.end.get()
-
-		if x == '':
-			while True:
-				try:
-					x = wikipedia.random()
-					self.text.insert(0.0, 'Random start is %s.\n' % x)
-					break
-				except UnicodeEncodeError:
-					pass
-		# Assigns end to random if empty
-		if y == '':
-			while True:
-				try:
-					y = wikipedia.random()
-					self.text.insert(0.0, 'Random end is %s.\n' % y)
-					break
-				except UnicodeEncodeError:
-					pass
-		self.text.insert(0.0, 'Start is %s.\nTarget is %s.\n' % (x,y))
-		main(x, y)
+		print(SearcherAlgorithm.main(x, y))
 
 # Creates about page
 def about():

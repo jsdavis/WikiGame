@@ -57,12 +57,20 @@ def acquireAllAssociations(ancestor,counter, listStrings):
 
 def main(begin, end):
 
+  
+
   try:
-    start = wikipedia.page(begin)
+    if begin == '':
+      start = wikipedia.random(1)
+    else:
+      start = wikipedia.page(begin)
   except wikipedia.exceptions.PageError: 
       return ("\nSorry the start page %s doesn't exist" %begin)
   try:
-    dest = wikipedia.page(end)
+    if end == '':
+      dest = wikipedia.random(1)
+    else:
+      dest = wikipedia.page(end)
   except wikipedia.exceptions.PageError: 
       return ("\nSorry the ending page %s doesn't exist" %end)
   

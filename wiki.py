@@ -54,9 +54,9 @@ def getLinks(page, masterList):
 ###############################################################################
 
 # Checks to see if the destination page is in the passed in list
-def findLink(links, wantedLink):
+def findDest(links):
   for x in range(len(links)):
-    if links[x].lower() == wantedLink.title.lower():
+    if links[x].lower() == dest.title.lower():
       return x
   return -1
 
@@ -77,7 +77,7 @@ def layerSearch(previousList, counter):
         for y in range(len(currentList)):
             associateTo(currentList[y],nextElem.title)
 
-        if(findLink(currentList) >= 0 ):
+        if(findDest(currentList) >= 0 ):
             return counter
 
         for i in currentList:
@@ -107,7 +107,7 @@ def PrintAllAssociations(ancestor,counter):
 
 ###############################################################################
 
-def main(begin, end):
+def main(begin, end)
 
   start = wikipedia.page(begin)
   dest = wikipedia.page(end)
@@ -122,7 +122,7 @@ def main(begin, end):
     
 
 
-  if(findLink(currentList) >= 0 ):
+  if(findDest(currentList) >= 0 ):
     PrintAllAssociations(dest.title, result)
     
   else:

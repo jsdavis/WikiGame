@@ -64,7 +64,7 @@ def about():
 
 # Donate command
 def donate():
-	webbrowser.open('http://bit.ly/1K19Ee4', new=0, autoraise=True)
+
 
 # Creates window
 root = Tk()

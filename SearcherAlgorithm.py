@@ -57,27 +57,19 @@ def acquireAllAssociations(ancestor,counter, listStrings):
 
 def main(begin, end):
 
-  
-
   try:
-    if begin == '':
-      start = wikipedia.random(1)
-    else:
-      start = wikipedia.page(begin)
+    start = wikipedia.page(begin)
   except wikipedia.exceptions.PageError: 
       return ("\nSorry the start page %s doesn't exist" %begin)
   try:
-    if end == '':
-      dest = wikipedia.random(1)
-    else:
-      dest = wikipedia.page(end)
+    dest = wikipedia.page(end)
   except wikipedia.exceptions.PageError: 
       return ("\nSorry the ending page %s doesn't exist" %end)
   
   previousList = []
   listOfConnections = []
   
-  currentList = getLinks(start, masterList)
+  currentList = getLinks(start.title, masterList)
   result = 1;
   
   for y in range(len(currentList)):

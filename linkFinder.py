@@ -1,5 +1,6 @@
 import urllib
 import re
+from wikipedia import *
 
 # Uses a wiki-text URL dump to generate a list of links for the given Wikipedia page
 def getLinks(page, masterList):

@@ -26,7 +26,6 @@ def getLinks(page, masterList):
       # Fix for foreign characters in Wiki articles
       url = str(url.encode('utf-8'))
 
-
   wikiText = str(urlPage.read())
 
 

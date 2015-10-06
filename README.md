@@ -10,5 +10,4 @@ a gui that makes it more interactive.
 An interactive gui which allows for
   - Random page queries
   - Simple name recognition
-  - Interactive John Cena Simulator
   - And much more!

@@ -21,7 +21,7 @@ def layerSearch(previousList, counter, dest):
         except wikipedia.exceptions.WikipediaException:
             continue
 
-        currentList = getLinks(nextElem, masterList)
+        currentList = getLinks(nextElem.title, masterList)
 
         for y in range(len(currentList)):
             associateTo(currentList[y],nextElem.title)
@@ -50,45 +50,39 @@ def acquireAllAssociations(ancestor,counter, listStrings):
         listStrings = listStrings + [reverseAssociations[x]]
         counter = counter - 1
         return acquireAllAssociations(reverseAssociations[x], counter, listStrings)
-        
+
   return listStrings
 
 ###############################################################################
 
 def main(begin, end):
 
-  
+  # TODO: FIX DISAMBIGUATION ERRORS ###########################################
 
   try:
-    if begin == '':
-      start = wikipedia.random(1)
-    else:
-      start = wikipedia.page(begin)
-  except wikipedia.exceptions.PageError: 
-      return ("\nSorry the start page %s doesn't exist" %begin)
+    start = wikipedia.page(begin) if begin != "" else wikipedia.page(wikipedia.random())
+  except wikipedia.exceptions.PageError:
+    return ("\nSorry the start page %s doesn't exist" %begin)
   try:
-    if end == '':
-      dest = wikipedia.random(1)
-    else:
-      dest = wikipedia.page(end)
-  except wikipedia.exceptions.PageError: 
-      return ("\nSorry the ending page %s doesn't exist" %end)
-  
+    dest = wikipedia.page(end) if end != "" else wikipedia.page(wikipedia.random())
+  except wikipedia.exceptions.PageError:
+    return ("\nSorry the ending page %s doesn't exist" %end)
+
+  #############################################################################
+
   previousList = []
   listOfConnections = []
-  
-  currentList = getLinks(start, masterList)
+
+  currentList = getLinks(start.title, masterList)
   result = 1;
-  
+
   for y in range(len(currentList)):
     associateTo(currentList[y],start.title)
-    
-
 
   if(findLink(currentList, dest) >= 0 ):
     listOfConnections = acquireAllAssociations(dest.title,
        result, listOfConnections)
-    
+
   else:
     previousList = currentList
 
@@ -97,11 +91,11 @@ def main(begin, end):
             masterList.append(i)
 
     result = layerSearch(previousList, result, dest)
-    listOfConnections = acquireAllAssociations(dest.title, 
+    listOfConnections = acquireAllAssociations(dest.title,
         result, listOfConnections)
 
-  return [dest.title] + listOfConnections 
-    
+  return [dest.title] + listOfConnections
+
 ###############################################################################
 # Globals
 

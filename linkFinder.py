@@ -1,16 +1,33 @@
 import urllib
 import re
 
-# Uses a wiki-text URL dump to generate a list of links for the given Wikipedia page
+# Uses a wiki-text URL dump to generate a list of links for the given Wikipedia page (using the title)
 def getLinks(page, masterList):
+
+  print("\n\n\n%s\n" % str(page.encode('utf-8')))
 
   # URL from which you can pull raw wiki-text from any page, given the title
   urlBase = "https://en.wikipedia.org/w/index.php?action=raw&title="
-  title = page.title.replace(" ", "%20")
+  title = page.replace(" ", "%20")
   url = urlBase + title
 
-  temp = urllib.request.urlopen(url)
-  wikiText = str(temp.read())
+  print("%s" % str(url.encode('utf-8')))
+
+  urlPage = None
+  while urlPage == None:
+    try:
+      urlPage = urllib.request.urlopen(url)
+    except urllib.error.HTTPError:
+      # For whatever reason, some things in () must be lowercase to avoid 404
+      index = url.rfind("(")
+      if index != -1:
+        url = url[:index] + url[index:].lower()
+    except UnicodeEncodeError:
+      # Fix for foreign characters in Wiki articles
+      url = str(url.encode('utf-8'))
+
+
+  wikiText = str(urlPage.read())
 
 
   # Avoid category links at the end of large articles by cutting off at one of these sections
@@ -24,7 +41,7 @@ def getLinks(page, masterList):
 
   # Truncate the raw wiki-text before we extract links
   try:
-    wikiText = wikiText[0:linksFix.start()]
+    wikiText = wikiText[:linksFix.start()]
   except:
     pass
 
@@ -49,8 +66,3 @@ def getLinks(page, masterList):
     index += 1
 
   return links
-
-###############################################################################
-
-
-

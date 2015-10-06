@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+# Tkinter cache
+=======
 # TKinter cache
+>>>>>>> master
 *.pyc
 
 # Windows image file caches

@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 # Tkinter cache
-=======
-# TKinter cache
->>>>>>> master
-*.pyc
+_pycache_/
 
 # Windows image file caches
 Thumbs.db

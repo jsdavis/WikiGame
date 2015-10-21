@@ -57,6 +57,7 @@ def acquireAllAssociations(ancestor,counter, listStrings):
 
 def main(begin, end):
 
+  
   # TODO: FIX DISAMBIGUATION ERRORS ###########################################
 
   try:
@@ -94,7 +95,7 @@ def main(begin, end):
     listOfConnections = acquireAllAssociations(dest.title,
         result, listOfConnections)
 
-  return [dest.title] + listOfConnections
+  return list(reversed([dest.title] + listOfConnections))
 
 ###############################################################################
 # Globals

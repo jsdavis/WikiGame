@@ -5,16 +5,16 @@ import webbrowser
 import SearcherAlgorithm
 
 class Application(Frame):
-	""" A GUI application used to find the shortest path between two Wikipedia articles"""
+	# A GUI application used to find the shortest path between two Wikipedia articles
 
 	def __init__(self, master):
-		""" Initialize the Frame """
+		# Initialize the Frame """
 		Frame.__init__(self, master)
 		self.grid()
 		self.create_widgets()
 
 	def create_widgets(self):
-		""" Generate instructions, entry boxes and submit buttons. Define actions for events. """
+		# Generate instructions, entry boxes and submit buttons. Define actions for events.
 
 		# Description of program
 		self.desc = Label(self, text = "Determine the shortest path between two articles!")
@@ -47,17 +47,22 @@ class Application(Frame):
 		self.text.grid(row = 4, column = 0, columnspan = 4, sticky = W, padx = 10, pady = 5)
 
 	def search(self):
-		""" Takes value from text fields and uses the wiki algorithm"""
+		# Takes value from text fields and uses the wiki algorithm
 		self.text.delete(0.0, END)
-		# Assigns start to random if empty
+		# Uses x and y to start algorithm
 		x = self.start.get()
 		y = self.end.get()
-		print(SearcherAlgorithm.main(x, y))
+		#print(SearcherAlgorithm.main(x, y))
+		list1 = SearcherAlgorithm.main(x, y)
+		print(list1)
+		self.text.insert(END, list1);
 
 # Creates about page
 def about():
 	newWin = Toplevel(root, height = 50, width = 50)
+	newWin.resizable(height = False, width = False)
 	newWin.title('About')
+
 	about = Label(newWin, text="This project was created from October 2nd - October 4th at UCSD's first Hackathon, SD Hacks\n" +
 							   "in the year 2015. The authors of this project are Nicholas-Lama Solet, Jacob Sean Davis and Anthony Lu.")
 	about.grid()

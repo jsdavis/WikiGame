@@ -55,7 +55,8 @@ class Application(Frame):
 		#print(SearcherAlgorithm.main(x, y))
 		list1 = SearcherAlgorithm.main(x, y)
 		print(list1)
-		self.text.insert(END, list1);
+		for z in list1:			
+			self.text.insert(END, z + "\n")
 
 # Creates about page
 def about():
